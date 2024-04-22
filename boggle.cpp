@@ -94,6 +94,21 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
 bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
-//add your solution here!
+	// If table goes out of bounds
+	if (r == board.size() || c == board[0].size()) return false;
 
+	// Add new letter to the word
+	word += board[r][c];
+	// If word does not exist, add letters to it and return whether a word exists or not
+	if (dict.find(word) == dict.end()) return boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc);
+	// If word exists, see if a longer word exists. If not, add current word to the results
+	else 
+	{
+		if (!boggleHelper(dict, prefix, board, word, result, r+dr, c+dc, dr, dc))
+		{
+			if (result.find(word) == result.end()) result.insert(word);
+			return true;
+		}
+		else return true;
+	}
 }
